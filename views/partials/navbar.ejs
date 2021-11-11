@@ -1,0 +1,177 @@
+<% if(currentUser) {%> 
+    <p id="userId" style="display: none;"><%= currentUser._id %></p> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<% } %> 
+
+<nav class="sticky">
+    
+    <div class="nav">
+        <ul class="left-menu">
+            <i class="fas fa-bars bars"></i>
+            <li class="brand"><a href="/">FoodieMakers</a></li>
+            <div>
+                <li class="categories">Categories <i class="fas fa-chevron-down categories chevron-down"></i><i class="fas fa-chevron-up categories chevron-up"></i></li>
+                <div class="dropdown-content">
+                    <a href="/products/categories/beverages"><li>Beverages</li></a>
+                    <a href="/products/categories/bakery"><li>Bakery</li></a>
+                    <a href="/products/categories/canned goods"><li>Canned Goods</li></a>
+                    <a href="/products/categories/dairy"><li>Dairy</li></a>
+                    <a href="/products/categories/dry goods"><li>Dry Goods</li></a>
+                    <a href="/products/categories/frozen foods"><li>Frozen Foods</li></a>
+                    <a href="/products/categories/other"><li>Other</li></a>
+                </div>
+            </div>
+            
+            <% if (currentUser) { %>
+            <li><a href="/products/new" class="link sell">Sell a Product</a></li>
+            <% } %>
+            
+        </ul>
+        <div class="center-menu">
+            <form action="/products/search" method="GET">
+                <input type="text" name="search" id="search" class="input search" placeholder="Search...">
+                <button class="btn"><i class="fas fa-search"></i></button>
+            </form>
+            
+        </div>
+        <ul class="right-menu">
+            <!-- <li class="link login"></li> -->
+            <% if (!currentUser) { %>
+            <li class="link login-mobile">Login</li>
+            <li class="link register"><a href="/register">Register</a></li>
+            <% } else{ %>
+            <% if (currentUser.chats != '') { %>
+                <div class="inbox link register" id="main-inbox">
+                    <p class="new-messages display-none" id="new-messages">You have new messages</p>
+                    <i class="fas fa-inbox" id="inbox"></i>
+                    <div class="box-inbox display-none" id="box-inbox">
+                        <div id="message-title-inbox">
+                            <div id="no-messages">You don't have new messages</div>
+                        </div>
+                        
+                       <div class="new-message-inbox" id="new-message-inbox">
+    
+                       </div>
+                       <div class="all-chats">
+                           <a href="/chat/<%= currentUser.chats[0]%>">See all chats</a>
+                       </div>
+                    </div>
+                    
+                    
+                </div>
+            <% } %>
+            
+            
+            <li class="link register"><a href="/profile/<%= currentUser._id %>">My Profile</a></li>
+            <li class="link register"><a href="/logout">Logout</a></li>
+            <% } %> 
+        </ul>
+    </div>
+    <div class="bars-menu display-none">
+        <div class="search">
+            <form action="/products/search" method="GET">
+                <input type="text" name="search" id="search2" class="input search" placeholder="Search...">
+                <button class="btn"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+
+        <div class="categories-menu">
+            <li class="categories dropdown">Categories <i class="fas fa-chevron-down categories" id="chevron-down"></i><i class="fas fa-chevron-up categories display-none" id="chevron-up"></i></li>
+            <div class="dropdown-content display-none" id="dropdown">
+                <li><a href="/products/categories/beverages">Beverages</a></li>
+                <li><a href="/products/categories/bakery">Bakery</a></li>
+                <li><a href="/products/categories/canned goods">Canned Goods</a></li>
+                <li><a href="/products/categories/dairy">Dairy</a></li>
+                <li><a href="/products/categories/dry goods">Dry Goods</a></li>
+                <li><a href="/products/categories/frozen foods">Frozen Foods</a></li>
+                <li><a href="/products/categories/other">Other</a></li>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+
+var socket = io();
+
+// Inbox
+const inboxBtn = document.getElementById('inbox')
+const currentUserId2 = document.getElementById('userId').innerText
+const chatLink = document.querySelector('.chat-link')
+
+socket.on('connect', () =>{
+    const socketId = socket.id
+    socket.emit('UserId', {currentUserId2, socketId})
+})
+
+inboxBtn.addEventListener('click', () =>{
+    document.getElementById('box-inbox').classList.toggle('display-block')
+    document.getElementById('new-messages').classList.remove('display-block')
+})
+
+
+
+socket.on('lastMessage', message => {
+    outputLastMessages(message)
+})
+
+
+// socket.emit('updateSeen', )
+
+
+function outputLastMessages(message){
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+    const messageId = getRandomInt(120)
+    
+    if(message.lastMessage.sender._id != currentUserId2){
+        const titleDiv = document.createElement('div');
+        const div = document.createElement('div');
+        div.classList.add('inbox-message');
+        if(message.lastMessage.sender.business != ''){
+            div.innerHTML = `<div class="sidebar"></div><a href="/chat/${message.singleChatId}" id="chat-${messageId}"><div class="message"><div class="message-sender">${message.lastMessage.sender.business[0].name}</div><div><p class="message-text">${message.lastMessage.message}</p></div></div></a>`;
+        } else {
+            div.innerHTML = `<div class="sidebar"></div><a href="/chat/${message.singleChatId}" id="chat-${messageId}"><div class="message"><div class="message-sender">${message.lastMessage.sender.username}</div><div><p class="message-text">${message.lastMessage.message}</p></div></div></a>`;
+        }
+        if(message != ''){
+            titleDiv.innerHTML = 'New Messages'
+            document.getElementById('no-messages').classList.add('display-none');
+            document.getElementById('message-title-inbox').appendChild(titleDiv);
+            document.getElementById('new-message-inbox').appendChild(div);
+            document.getElementById('new-messages').classList.add('display-block')
+            document.getElementById('main-inbox').classList.add('inbox-notification')
+        }
+    }
+    
+    const singleChatId = message.singleChatId
+    document.getElementById(`chat-${messageId}`).addEventListener('click', () =>{
+        socket.emit('updateSeen', singleChatId)
+    })
+    
+}
+
+
+
+// Responsive burger
+const bars = document.querySelector('.bars')
+const categMenu = document.querySelector('.categories-menu')
+    
+bars.onclick = function openMenu(){
+    document.querySelector('.bars-menu').classList.toggle('display-block');
+   
+    // const dropdown = document.querySelector('.dropdown-content')
+
+    
+
+}
+categMenu.addEventListener('click', openCateg)
+function openCateg(){
+    document.querySelector('#dropdown').classList.toggle('display-block');
+    document.querySelector('#chevron-down').classList.toggle('display-none');
+    document.querySelector('#chevron-up').classList.toggle('display-none');
+    // console.log(document.querySelector('#chevron-down'))
+}
+
+
+</script>

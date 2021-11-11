@@ -1,0 +1,218 @@
+/* Basic styling */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+// Utils
+@import './utils';
+
+// _shows.scss
+@import './show';
+
+// _new.scss
+@import './new';
+
+// _edit.scss
+@import './edit';
+
+// _register.scss
+@import './register';
+
+// _chat.scss
+@import './chat';
+
+// _categories.scss
+@import './categories';
+
+// _profile.scss
+@import './profile';
+
+
+
+// _search.scss
+@import './search';
+
+
+.container-img{
+    width: 90%;
+    margin: 30px auto;
+    // margin-bottom: 50px;
+    .img-box{
+        display: flex;
+        justify-content: center;
+        background-color: white;
+        svg {
+            width:  auto;
+            height: auto;
+        }
+
+    }
+}
+
+
+// home.ejs
+.container{
+    width: 85%;
+    margin: 30px auto;
+    h2{
+        font-size: 22px;
+        text-align: center;
+        margin-bottom: 6px;
+    }
+    
+    
+    .products{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        
+        .card {
+            text-align: center;
+            margin: 1em;
+            background-color: white;
+            transition: transform 0.15s;
+            &:hover{
+                transform: scale(1.028);
+            }
+            
+            .fast-transition {
+                padding-bottom: 10px;
+                position: relative; /* For positioning the pseudo-element */
+                box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+                
+                }
+                
+                .fast-transition::before {
+                /* Position the pseudo-element. */
+                content: ' ';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                
+                /* Create the box shadow at expanded size. */
+                box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.5);
+                
+                /* Hidden by default. */
+                opacity: 0;
+                transition: opacity 500ms;
+                }
+                
+                .fast-transition:hover::before {
+                /* Show the pseudo-element on hover. */
+                opacity: 1;
+                
+                }
+            
+        }
+        img {
+            width: 180px;
+            height: 160px;
+            border-bottom: 2px solid rgba($color: #000000, $alpha: 0.1);
+        }
+        .content{
+            width: 180px;
+            display: flex;
+            // justify-content: space-between;
+            flex-direction: column;
+            text-align: center;
+            margin-top: 0.5em;
+            word-wrap: break-word;
+            .price-and-title{
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 10px;
+                
+                .price-rated{
+                    margin: 0 20px 0 10px;
+                }
+                p{
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+            }
+            .stars-rated{
+                .total-reviews{
+                    margin-top: 5px;
+                    font-weight: 500;
+                    font-size: 12px;
+                    color: #ccc;
+                }
+                .stars2-rating{
+                    font-size: 15px;
+                    font-weight: 500;
+                }
+                .stars2-outer {
+                    position: relative;
+                    display: inline-block;
+                    z-index: 4;
+                    .stars2-inner {
+                        position: absolute;
+                        z-index: 5;
+                        top: 0;
+                        left: 0;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        width: 0;
+                    }
+                }
+                
+                
+                .stars2-outer::before {
+                    content: "\f005 \f005 \f005 \f005 \f005";
+                    font-family: "Font Awesome 5 Free";
+                    font-weight: 900;
+                    color: #ccc;
+                }
+                
+                .stars2-inner::before {
+                    content: "\f005 \f005 \f005 \f005 \f005";
+                    font-family: "Font Awesome 5 Free";
+                    font-weight: 900;
+                    color: #f8ce0b;
+                }
+            }
+            
+        }
+    }
+}
+
+@media(max-width: 768px){
+    .container-img{
+        width: 100%;
+        margin: 20px auto;
+        // margin-bottom: 50px;
+        .img-box{
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            svg {
+                width:  auto;
+                height: 300px;
+            }
+    
+        }
+    }
+    .container{
+        width: 95%;
+        .products{
+            .card{
+                margin: 8px;
+                .fast-transition {
+                    height: 100%;
+                }
+            }
+            .content{
+                width: 160px;
+                word-wrap: break-word;
+                .price-and-title{
+                    flex-direction: column;
+                    justify-content: center;
+                }
+            }
+            img{
+                width: 160px;
+                height: 140px;
+            }
+        }
+    }
+}

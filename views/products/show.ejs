@@ -1,0 +1,315 @@
+<% layout('layouts/boilerplate') %> 
+<!-- Product box -->
+
+<div class="box">
+    <% if(currentUser && product.author.equals(currentUser._id)) { %>
+    <div class="product-control">
+        <form action="/products/<%= product._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-product-delete">Delete Product</button>
+        </form>
+        <div>|</div>
+        <a href="/products/<%= product._id %>/edit" class="btn-product-delete">Edit</a>
+    </div>
+    <% } %> 
+    <div class="top">
+        <div class="img-box">
+            <div id="primary-slider" class="splide">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <% for(let img of product.images){ %> 
+                        <li class="splide__slide">
+                            <img src="<%= img.url %>" alt="" srcset="">
+                        </li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+            <div id="secondary-slider" class="splide">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <% for(let img of product.images){ %> 
+                        <li class="splide__slide">
+                            <img src="<%= img.thumbnail %>" alt="" srcset="">
+                        </li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-box">
+            <div class="top-text-box">
+                <div class="product-element title">
+                    <div class="product-title"><%= product.title %> </div>
+                </div>
+                <div class="product-element">
+                    <div class="price">$<%= product.price %></div>
+                </div>
+                <div class="product-element">
+                    <p class="free-shipping">Free Shipping</p>
+                </div>
+                <div class="product-description">
+                    <div class="product-description-title">Seller</div>
+                    
+                    <div class="business-name"><a href="/profile/<%= product.author._id %>"><%= product.author.business[0].name %></a></div>
+                    <div class="location">Location: <%= product.author.business[0].location%></div>
+                    
+                </div>
+            </div>
+            <div class="bottom-text-box">
+                <div class="rating">
+                    <% if (product.reviews.length >= 1) { %>
+                        <% let ratings = [] %> 
+                        <% for( let index = 0; index < product.reviews.length; index++ ) { %>
+                          <% ratings.push(product.reviews[index].rating) %> 
+                        <% } %>
+                        <% const average = (array) => array.reduce((a, b) => a + b) / array.length; %>
+                        
+                        
+                        <%# const starsTotal = 5; %> 
+                        <% const starPercentage = (average(ratings) / 5) * 100 %> 
+                        <%# Round to nearest 10 %> 
+                        <%# const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}`; %> 
+                        <% const starDecimal = `${(Math.round(average(ratings) * 100) / 100).toFixed(2)}`; %> 
+                        <div class="stars-outer">
+                            
+                            <div class="stars-inner" style="width:<%= starPercentage %>%;" > </div>
+                            
+                        </div>
+                        <span class="stars-rating">
+                            <%#= average(ratings)%>
+                            <%= starDecimal%>
+                        </span>
+                        <span class="total-reviews">
+                            <% if (product.reviews.length === 1) { %>
+                                - (<%= product.reviews.length  %> review)
+                            <% } else {%>
+                                - (<%= product.reviews.length  %> reviews)
+                            <% } %> 
+                        </span>
+                         
+                    <% } %>
+                    
+                    <%# Set width of stars-inner to percentage %>
+                    <!-- <script>
+                        document.querySelector('.stars-inner').style.width = starPercentageRounded
+                    </script> 
+                     -->
+                </div>
+                
+                <div class="buy">
+                    <% if (currentUser) { %>
+                         <% if (currentUser._id.toString() != product.author._id.toString()) { %>
+                            <form action="/chats" method="POST">
+                                <button class="btn btn-buy" name="userToContact" value="<%= product.author._id %>">Contact Seller</button>
+                            </form>
+                         <% } %>
+                            
+                    <% } else {%>
+                        <button class="btn btn-buy">Log In To Contact Seller</button>
+                    <% } %> 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="description-container">
+        <h3>Product Description</h3>
+        <%= product.description %> 
+    </div>
+    
+</div>
+
+<!-- Reviews box -->
+<div class="box">
+    
+    <!-- Box to leave a review -->
+    <div class="review-box">
+        <% if (product.reviews.length < 1) { %>
+        <div>
+            No reviews yet...
+        </div>
+        <% } %>
+        <% if (currentUser) { %>
+        <h2>Leave a review</h2>
+        <form action="/products/<%= product._id %>/reviews" method="POST">
+            <div>
+                <fieldset class="starability-grow">
+                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+            </div>
+            <div>
+                <textarea name="review[body]" id="body" cols="30" rows="10" class="input" placeholder="Leave a review..." required></textarea>
+            </div>
+            <button class="btn btn-review">Submit review</button>
+        </form>
+        <% } %>
+    </div>
+     
+    
+    <!-- Box with reviews -->
+    <div class="reviews">
+        <% if (product.reviews.length > 1) { %>
+            <h2>Reviews</h2>
+        <% } %> 
+        
+        <% const totalItems = product.reviews.length %>
+        <% const currentPage = 1 %> 
+        <% const pageSize = 5 %>  
+        <% let totalPages = Math.ceil(totalItems / pageSize); %> 
+        <%# console.log(totalPages) %>
+        
+        <div class="pagination">
+            <div>
+                <% if (page > 1) { %>
+                <a href="/products/<%= product._id %>?page=<%= page - 1 %>&limit=<%=pageSize%>"><i class="fas fa-angle-double-left arrow"></i></a>
+                <% } %>
+                
+                <% for( let index = 1; index <= totalPages; index++ ) { %>
+                <a href="/products/<%= product._id %>?page=<%= index %>&limit=<%=pageSize%>" class="page-number-<%= index %> number"><%= index %></a>
+                <% } %>
+                <% if (totalItems > pageSize && page < totalPages) { %>
+                <a href="/products/<%= product._id %>?page=<%= page + 1 %>&limit=<%=pageSize%>"><i class="fas fa-angle-double-right arrow"></i></a>
+                <% } %>
+                
+            </div>
+        </div> 
+       
+        <% if (!page) { %>
+        <% let result = product.reviews.slice(0, 5) %>
+        <% result.forEach( function( review ) { %>
+        <div class="review">
+            <div>
+                <span>
+                    <% for( let index = 0; index < review.rating; index++ ) { %>
+                        <i class="fas fa-star star-active"></i>
+                    <% } %>
+                    <% for( let index = review.rating; index < 5; index++ ) { %>
+                        <i class="fas fa-star star-inactive"></i>
+                    <% } %>
+                    <div>
+                        - <%= review.author.username %>
+                    </div>
+                </span>
+            </div>
+            
+            <p><%= review.body %> </p> 
+            <% if(currentUser && review.author.equals(currentUser._id)) { %>
+            <!-- Delete review button, only seen by the review's creator  -->
+            <form action="/products/<%= product._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-product-delete">Delete Review</button>
+            </form>
+            <% } %> 
+        </div>
+        <% }) %>
+        <% } %>
+        
+
+
+
+        <% if (page) { %>
+         
+        
+        <% let result = product.reviews.slice(startIndex, endIndex) %>
+        <% result.forEach( function( review ) { %>
+        <div class="review">
+            <div>
+                <span>
+                    <% for( let index = 0; index < review.rating; index++ ) { %>
+                        <i class="fas fa-star star-active"></i>
+                    <% } %>
+                    <% for( let index = review.rating; index < 5; index++ ) { %>
+                        <i class="fas fa-star star-inactive"></i>
+                    <% } %>
+                    <div>
+                        - <%= review.author.username %>
+                    </div>
+                </span>
+            </div>
+            
+            <p><%= review.body %> </p> 
+            <% if(currentUser && review.author.equals(currentUser._id)) { %>
+            <!-- Delete review button, only seen by the review's creator  -->
+            <form action="/products/<%= product._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-product-delete">Delete Review</button>
+            </form>
+            <% } %> 
+        </div>
+        <% }) %>
+        <% } %>
+        
+
+    </div>
+   
+
+    
+</div>
+
+
+<script>
+// const page1 = document.querySelector('.page-number-1')
+// page1.classList.add('is-active')
+
+for( let index = 1; index <= '<%-totalPages%>'; index++ ) {
+    let pageNumber = document.querySelector(`.page-number-${index}`)
+    const page = '<%-page%>'
+
+ 
+    
+
+    if(page != 1){
+        const page1 = document.querySelector('.page-number-1')
+        page1.classList.remove('is-active')
+    }
+
+    if (page === pageNumber.innerHTML){
+        pageNumber.classList.add('is-active')
+    }
+}
+
+
+// JS Splide slideshow
+
+document.addEventListener( 'DOMContentLoaded', function () {
+	var secondarySlider = new Splide( '#secondary-slider', {
+		fixedWidth  : 100,
+		height      : 100,
+		gap         : 25,
+		cover       : true,
+		isNavigation: true,
+		pagination: false,
+        arrows: false,
+		focus       : 'center',
+		breakpoints : {
+			'600': {
+				fixedWidth: 66,
+				height    : 40,
+			}
+		},
+	} ).mount();
+	
+	var primarySlider = new Splide( '#primary-slider', {
+		type       : 'loop',
+		heightRatio: 1,
+		pagination : false,
+		arrows     : false,
+		cover      : true,
+	} ); // do not call mount() here.
+	
+	primarySlider.sync( secondarySlider ).mount();
+} );
+
+
+
+
+</script>

@@ -1,0 +1,257 @@
+<% layout('layouts/boilerplate') %> 
+
+
+<%# console.log(userChats[0]._id)  %> 
+<div class="box-big">
+    <div class="chat-box">
+        <h1>Private Messages</h1>
+        
+        
+        <div class="chat">
+            <div class="chat-menu" id="chat-menu">
+                <div>Messages</div>
+                <% if (currentUser) { %>
+                    <% currentUser.chats.forEach(function(chatId){ %>
+                        <% if (chatId != id) { %>
+                            <a href="/chat/<%= chatId %>">
+                                <%# console.log(userChats[0].messages) %> 
+                                <% userChats.forEach(function(j){ %>
+                                        
+                                    <% if (j._id != id && j.messages != '') { %>
+                                        <% lastElement = j.messages[j.messages.length - 1] %>
+                                        <% if (lastElement.seen === false && lastElement.sender.toString() != currentUser._id.toString()) { %>
+                                            <div class="side-messages border-notification" id="side-messages-<%=chatId%>">
+                                        
+                                                <% if (j._id != id) { %>
+                                                   
+                                                    <% if (currentUser._id == j.userToContact._id.toString()) { %>
+                                                        <% if (j.currentUser.business != '') { %>
+                                                            <p class="business-name"><%= j.currentUser.business[0].name %> </p>
+                                                        <% } else { %>
+                                                            <p class="business-name"><%= j.currentUser.username %> </p>
+                                                        <% } %> 
+                                                            
+                                                    <% } else if(currentUser._id == j.currentUser._id.toString()){%>
+                                                        <% if (j.userToContact.business != '') { %>
+                                                            <p class="business-name"><%= j.userToContact.business[0].name %> </p>
+                                                        <% } else { %>
+                                                            <p class="business-name"><%= j.userToContact.username %> </p>
+                                                        <% } %> 
+                                                    <% } %>
+                                                <% } %>
+                                                <div id="last-message-box-<%=chatId%>">
+                                                    <% console.log(typeof(lastElement.sender), typeof(currentUser._id)) %> 
+                                                    <p id="last-message-<%=chatId%>" class="last-message "><%= lastElement.message %> </p>
+                                                </div>
+                                                
+                                            </div>     
+                                        <% } else {%>
+                                            <div class="side-messages" id="side-messages-<%=chatId%>">
+                                        
+                                                <% if (j._id != id) { %>
+                                                   
+                                                    <% if (currentUser._id == j.userToContact._id.toString()) { %>
+                                                        <% if (j.currentUser.business != '') { %>
+                                                            <p class="business-name"><%= j.currentUser.business[0].name %> </p>
+                                                        <% } else { %>
+                                                            <p class="business-name"><%= j.currentUser.username %> </p>
+                                                        <% } %> 
+                                                            
+                                                    <% } else if(currentUser._id == j.currentUser._id.toString()){%>
+                                                        <% if (j.userToContact.business != '') { %>
+                                                            <p class="business-name"><%= j.userToContact.business[0].name %> </p>
+                                                        <% } else { %>
+                                                            <p class="business-name"><%= j.userToContact.username %> </p>
+                                                        <% } %> 
+                                                    <% } %>
+                                                <% } %>
+                                                <div id="last-message-box-<%=chatId%>">
+                                                    <p id="last-message-<%=chatId%>" class="last-message "><%= lastElement.message %> </p>
+                                                </div>
+                                                
+                                            </div>        
+                                        <% } %> 
+                                    <% } %>
+                                    
+                                <% }) %> 
+                                    
+                                
+                            </a>
+                        <% } %>
+                        
+                        
+                    <% }) %> 
+                <% } %>
+                
+              <%# console.log(userChats[1].messages[0].message) %> 
+            </div>
+           
+            
+            <div class="chat-message">
+                <div class="other-user">
+
+                
+                <% if(currentUser._id.toString() == user1._id.toString()){ %> 
+                    <%# console.log(user1.username) %> 
+                    <p><%= user2.business[0].name %> </p>
+                <% } else if(currentUser._id.toString() == user2._id.toString()){%>
+                    <%# console.log(user1.username) %> 
+                    <p><%= user1.username %> </p>
+                <% } %>
+                </div>
+                <div class="chat-show">
+                    
+                    <div class="messages">
+                        <% const messages = chat.messages %> 
+                        <% messages.forEach(function(content){ %>
+                            <% if (currentUser._id.toString() == content.sender.toString()) { %>
+                                
+                                <div class="current-user">
+                                    <p><%= content.message %> </p>
+                                </div>
+                                
+                            <% } else if(currentUser._id != content.sender){%>
+                                <p class="contact-message"><%= content.message %> </p> 
+                            <% } %> 
+                        <% }) %> 
+                    </div>  
+                </div>
+                
+                
+                
+                <div class="send-message">
+                    <form action="" id="chat-form" autocomplete="off">
+                        <input type="text" class="input" id="msg">
+                        <button class="btn-send">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script>
+
+    
+    // Chat //
+    const chatForm = document.getElementById('chat-form')
+    const chatMessages = document.querySelector('.chat-show')
+    chatMessages.scrollTo(0, chatMessages.scrollHeight);
+    // Socket.io
+    // var socket = io();
+
+    // Join chatroom
+    const roomId = '<%= id %>'
+    const currentUserId = '<%= currentUser._id %>' 
+    const user1 = '<%= user1._id %>'
+    const user2 = '<%= user2._id %>'
+    // if inside the script tag, EJS turns arrays into strings, so the JSON.stringify method is needed to turn the string back into an array.
+    const chatIds = '<%=chatIds%>'
+   
+    // console.log(chatIds)
+    // socket.emit('join', '<%#-id%>')
+    socket.emit('join', {roomId, currentUserId, chatIds})
+    // socket.emit('joinRooms', currentUserId)
+
+
+    // Message from server
+    socket.on('message', message =>{
+        const {totalUsers} = message
+        
+        if(roomId == message.roomId){
+            if (currentUserId == message.currentUserId){
+            outputMessageCurrent(message)
+            } else {
+                outputMessage(message)
+            }
+        } else{
+            // console.log(message)
+            // console.log('not in the same room as this message')
+            outputSideMessage(message)
+        }
+        
+        
+        
+
+        // Scroll down
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    })
+
+    
+    
+   
+
+    // Message submit
+    chatForm.addEventListener('submit', (e) =>{
+        e.preventDefault();
+        
+        // Get message from input
+        const msg = e.target.elements.msg.value;
+
+        // Emit message to server
+        if(user1 == currentUserId){
+            const receiver = user2
+            socket.emit('chatMessage', {msg, currentUserId, receiver})
+        } else if(user2 == currentUserId){
+            const receiver = user1
+            socket.emit('chatMessage', {msg, currentUserId, receiver}) 
+        }
+        
+
+        // Clear input
+        e.target.elements.msg.value = '';
+        e.target.elements.msg.focus();
+
+    })
+
+    // Output message to DOM
+    function outputMessage(message){
+        const div = document.createElement('div');
+        div.classList.add('contact-message');
+        div.innerHTML = `<p> ${message.message} </p>`;
+        if(message != ''){
+            document.querySelector('.messages').appendChild(div);
+        }
+        
+    }
+
+    function outputMessageCurrent(message){
+        const div = document.createElement('div');
+        div.classList.add('current-user');
+        div.innerHTML = `<p> ${message.message} </p>`;
+        if(message != ''){
+            document.querySelector('.messages').appendChild(div);
+        }
+        
+    }
+
+   // Other messages
+    // socket.emit('sideChat', {currentUserId, roomId})
+    // socket.on('sideChatMessages', lastMessages2 =>{
+    //     outputSideMessage(lastMessages2)
+        
+    // })
+
+
+    function outputSideMessage(message){
+        // // add display: none to last message that is retrieved from the database
+        // document.getElementById('last-message-' + message.roomId).classList.add('display-none')
+        document.getElementById('last-message-' + message.roomId).remove()
+        // console.log(test)
+
+
+        // // if other user sends a message while current user is in the chats page, this will update that last message shown from the chat with the other user
+        const div = document.createElement('div');
+        // div.innerHTML = `<p class="last-message-${message.currentUserId}">${message.message}</p>`
+        div.innerHTML = `<p id="last-message-${message.roomId}" class="last-message">${message.message}</p>`
+        document.getElementById('last-message-box-' + message.roomId).appendChild(div);
+        document.getElementById('side-messages-' + message.roomId).classList.add('border-notification')
+
+    }
+
+    // Chat //
+</script>

@@ -1,0 +1,73 @@
+<% layout('layouts/boilerplate') %> 
+
+<div class="box2">
+    <div class="box-model">
+        <h1>Business details</h1>
+        
+        <form action="/profile/<%= user._id %>/business?_method=PUT" method="POST">
+            <% if (user.business == '') { %>
+             
+                <% if(error && error.length) {%>
+                    <% if (error == 'Name already in use') { %>
+                       <div class="element">
+                           <label for="name">Business Name</label>
+                           <input type="text" name="business[name]" id="name" class="input-alert"  required>
+                           <div class="alert">Name not available</div>
+                       </div>
+                       <% } %>
+                   <% } %>
+               <% if (error == '') {%> 
+               <div class="element">
+                   <label for="name">Business Name</label>
+                   <input type="text" name="business[name]" id="name" class="input" required>
+               </div>
+               <% } %>
+            <div class="element">
+                <label for="location">Location</label>
+                <input type="text" name="business[location]" id="location" class="input" required>
+            </div>
+            <div>
+                <label for="description">Briefly describe your business</label>
+                <textarea name="business[description]" id="description" cols="60" rows="10" class="input" required></textarea>
+            </div>
+            <button class="btn btn-buy">Save Changes</button>
+            <% } else {%>
+                <% if(error && error.length) {%>
+                     <% if (error == 'Name already in use') { %>
+                        <div class="element">
+                            <label for="name">Business Name</label>
+                            <input type="text" name="business[name]" id="name" class="input-alert" required>
+                            <div class="alert">Name not available</div>
+                        </div>
+                        <% } %>
+                    <% } %>
+                <% if (error == '') {%> 
+                <div class="element">
+                    <label for="name">Business Name</label>
+                    <input type="text" name="business[name]" id="name" class="input" value="<%= user.business[0].name %>" required>
+                </div>
+                <% } %>
+
+            <div class="element">
+                <label for="location">Location</label>
+                <input type="text" name="business[location]" id="location" class="input" value="<%= user.business[0].location %>" required>
+            </div>
+            <div>
+                <label for="description">Briefly describe your business</label>
+                <textarea name="business[description]" id="description" cols="60" rows="10" class="input" required><%= user.business[0].description %></textarea>
+            </div>
+            <button class="btn btn-buy">Save Changes</button>
+            <% } %> 
+        </form>
+    </div>
+    
+</div>
+
+<!-- <script>
+document.getElementById('name').onkeyup = function() {
+    var name=this.value;
+    sessionStorage.setItem('name',name);
+    
+};
+document.getElementById('name').value=sessionStorage.getItem('name')
+</script> -->

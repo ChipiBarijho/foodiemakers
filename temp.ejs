@@ -1,0 +1,10 @@
+<% if(currentUser && user.equals(currentUser._id)) { %>
+    <% if (user.business != '') { %>
+    <a href="/profile/<%= user._id %>/business" class="link-business">Edit Business Details</a>
+    <a href="#" class="link-business">Messages</a>
+    <% } %>
+    <% if (user.business == '') { %>
+    <a href="/profile/<%= user._id %>/business" class="link-business">Set up your business</a>
+    
+    <a href="#" class="link-business">Messages</a>
+<% } %>

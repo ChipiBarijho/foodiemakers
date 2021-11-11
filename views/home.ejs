@@ -1,0 +1,214 @@
+<% layout('layouts/boilerplate') %>
+<div class="container-img">
+    <div class="img-box">
+        <%- include('./partials/image') %> 
+    </div>
+    
+</div>
+
+<div class="container">
+    <h2 class="">Best Rated Products</h2>
+    <div class="products">
+        <% for( let product of bestRatedProducts) { %>
+            <a href="/products/<%= product.id %>" class="card">
+                <div class="fast-transition">
+                    <div class="">
+                        <img src="<%= product.image%>" alt="" srcset="">
+                        
+                    </div>
+                    <div class="content">
+                        <div class="price-and-title">
+                            <p class="price-rated">$<%= product.price %></p>
+                            <p class="title-rated"><%= product.title %> </p>
+                        </div>
+                        <div class="stars-rated">
+                            <% const starPercentage = (product.finalRating / 5) * 100 %> 
+                            
+                            <% const starDecimal = `${(Math.round(product.finalRating * 100) / 100).toFixed(2)}`; %> 
+                            <div class="stars2-outer">
+                                
+                                <div class="stars2-inner" style="width:<%= starPercentage %>%;"> </div>
+                                
+                            </div>
+                            <span class="stars2-rating">
+                                <%#= average(ratings)%>
+                                <%= starDecimal%>
+                            </span>
+                            <div class="total-reviews">
+                                <%= product.totalReviews %> reviews
+                            </div>
+                            <%#= product.finalRating %> 
+                        </div>
+                        
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</div>
+
+
+<div class="container">
+    <h2>Featured in 'Beverages'</h2>
+    <div class="products">
+        <% for( let product of bestBeverages) { %>
+            <a href="/products/<%= product.id %>" class="card">
+                <div class="fast-transition">
+                    <div class="">
+                        <img src="<%= product.image%>" alt="" srcset="">
+                        
+                    </div>
+                    <div class="content">
+                        <div class="price-and-title">
+                            <p class="price-rated">$<%= product.price %></p>
+                            <p class="title-rated"><%= product.title %> </p>
+                        </div>
+                        <div class="stars-rated">
+                            <% const starPercentage = (product.finalRating / 5) * 100 %> 
+                            
+                            <% const starDecimal = `${(Math.round(product.finalRating * 100) / 100).toFixed(2)}`; %> 
+                            <div class="stars2-outer">
+                                
+                                <div class="stars2-inner" style="width:<%= starPercentage %>%;"> </div>
+                                
+                            </div>
+                            <span class="stars2-rating">
+                                <%#= average(ratings)%>
+                                <%= starDecimal%>
+                            </span>
+                            <div class="total-reviews">
+                                <%= product.totalReviews %> reviews
+                            </div>
+                            <%#= product.finalRating %> 
+                        </div>
+                        
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Featured in 'Dry Goods'</h2>
+    <div class="products">
+        <% for( let product of bestDryGoods) { %>
+            <a href="/products/<%= product.id %>" class="card">
+                <div class="fast-transition">
+                    <div class="">
+                        <img src="<%= product.image%>" alt="" srcset="">
+                        
+                    </div>
+                    <div class="content">
+                        <div class="price-and-title">
+                            <p class="price-rated">$<%= product.price %></p>
+                            <p class="title-rated"><%= product.title %> </p>
+                        </div>
+                        <div class="stars-rated">
+                            <% const starPercentage = (product.finalRating / 5) * 100 %> 
+                            
+                            <% const starDecimal = `${(Math.round(product.finalRating * 100) / 100).toFixed(2)}`; %> 
+                            <div class="stars2-outer">
+                                
+                                <div class="stars2-inner" style="width:<%= starPercentage %>%;"> </div>
+                                
+                            </div>
+                            <span class="stars2-rating">
+                                <%#= average(ratings)%>
+                                <%= starDecimal%>
+                            </span>
+                            <div class="total-reviews">
+                                <%= product.totalReviews %> reviews
+                            </div>
+                            <%#= product.finalRating %> 
+                        </div>
+                        
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Featured in 'Dairy'</h2>
+    <div class="products">
+        <% for( let product of bestDairy) { %>
+            <a href="/products/<%= product.id %>" class="card">
+                <div class="fast-transition">
+                    <div class="">
+                        <img src="<%= product.image%>" alt="" srcset="">
+                        
+                    </div>
+                    <div class="content">
+                        <div class="price-and-title">
+                            <p class="price-rated">$<%= product.price %></p>
+                            <p class="title-rated"><%= product.title %> </p>
+                        </div>
+                        <div class="stars-rated">
+                            <% const starPercentage = (product.finalRating / 5) * 100 %> 
+                            
+                            <% const starDecimal = `${(Math.round(product.finalRating * 100) / 100).toFixed(2)}`; %> 
+                            <div class="stars2-outer">
+                                
+                                <div class="stars2-inner" style="width:<%= starPercentage %>%;"> </div>
+                                
+                            </div>
+                            <span class="stars2-rating">
+                                <%#= average(ratings)%>
+                                <%= starDecimal%>
+                            </span>
+                            <div class="total-reviews">
+                                <%= product.totalReviews %> reviews
+                            </div>
+                            <%#= product.finalRating %> 
+                        </div>
+                        
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</div>
+
+
+<div class="container">
+    <h2>Featured in 'Other'</h2>
+    <div class="products">
+        <% for( let product of bestOther) { %>
+            <a href="/products/<%= product.id %>" class="card">
+                <div class="fast-transition">
+                    <div class="">
+                        <img src="<%= product.image%>" alt="" srcset="">
+                        
+                    </div>
+                    <div class="content">
+                        <div class="price-and-title">
+                            <p class="price-rated">$<%= product.price %></p>
+                            <p class="title-rated"><%= product.title %> </p>
+                        </div>
+                        <div class="stars-rated">
+                            <% const starPercentage = (product.finalRating / 5) * 100 %> 
+                            
+                            <% const starDecimal = `${(Math.round(product.finalRating * 100) / 100).toFixed(2)}`; %> 
+                            <div class="stars2-outer">
+                                
+                                <div class="stars2-inner" style="width:<%= starPercentage %>%;"> </div>
+                                
+                            </div>
+                            <span class="stars2-rating">
+                                <%#= average(ratings)%>
+                                <%= starDecimal%>
+                            </span>
+                            <div class="total-reviews">
+                                <%= product.totalReviews %> reviews
+                            </div>
+                            <%#= product.finalRating %> 
+                        </div>
+                        
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</div>

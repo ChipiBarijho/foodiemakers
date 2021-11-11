@@ -1,0 +1,82 @@
+<% layout('layouts/boilerplate') %> 
+
+
+<div class="container categories-box">
+    <div class="category-list-box">
+        <h3>Categories</h3>
+        <div class="categories-list">
+            <a href="/products/categories/beverages"><li>Beverages</li></a>
+            <a href="/products/categories/bakery"><li>Bakery</li></a>
+            <a href="/products/categories/canned goods"><li>Canned Goods</li></a>
+            <a href="/products/categories/dairy"><li>Dairy</li></a>
+            <a href="/products/categories/dry goods"><li>Dry Goods</li></a>
+            <a href="/products/categories/frozen foods"><li>Frozen Foods</li></a>
+            <a href="/products/categories/other"><li>Other</li></a>
+        </div>
+    </div>
+    <div class="category-products">
+        <h1 style="text-transform: capitalize;"><%= category %> </h1>
+        <div class="products">
+            <% for( let product of products) { %>
+                <a href="/products/<%= product.id %>" class="card">
+                    <div class="fast-transition">
+                        <div class="">
+                            <img src="<%= product.images[0].url%>" alt="" srcset="">
+                            
+                        </div>
+                        <div class="content">
+                            <div class="price-and-title">
+                                <p class="price-rated">$<%= product.price %></p>
+                                <p class="title-rated"><%= product.title %> </p>
+                            </div>
+                            <div class="stars-rated">
+                                <% if (product.reviews.length >= 1) { %>
+                                    <% let ratings = [] %> 
+                                    <% for( let index = 0; index < product.reviews.length; index++ ) { %>
+                                        <% ratings.push(product.reviews[index].rating) %> 
+                                    <% } %>
+                                    
+                                    <% const average = (array) => array.reduce((a, b) => a + b) / array.length; %>
+
+                                    <% const starPercentage = (average(ratings) / 5) * 100 %> 
+                                    <%# Round to nearest 10 %> 
+                                    <% const starDecimal = `${(Math.round(average(ratings) * 100) / 100).toFixed(2)}`; %> 
+                                    <div class="stars2-outer">
+                                    
+                                        <div class="stars2-inner" style="width:<%= starPercentage %>%;"> </div>
+                                        
+                                    </div>
+                                    <span class="stars2-rating">
+                                        <%#= average(ratings)%>
+                                        <%= starDecimal%>
+                                    </span>
+                                    
+                                    <div class="total-reviews">
+                                        
+                                        <% if (product.reviews.length === 1) { %>
+                                            <%= product.reviews.length %> review
+                                        <% } else if (product.reviews.length > 1){%>
+                                            <%= product.reviews.length %> reviews
+                                        <% }%>
+                                    </div> 
+                                <% } else{ %>
+                                    <div>
+                                        <br>
+                                    </div> 
+                                    <div class="total-reviews">
+                                        
+                                        No reviews yet...
+                                    </div> 
+                                <% } %> 
+                                
+                                <%#= product.finalRating %> 
+                            </div>
+                            
+                        </div>
+                    </div>
+                </a>
+            <% } %>
+        </div>
+    </div>
+   
+</div>

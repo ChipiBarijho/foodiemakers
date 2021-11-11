@@ -1,0 +1,26 @@
+<% layout('layouts/boilerplate') %>  
+<div class="box2">
+    
+    <div class="box-model">
+        <h1 class="title">Create new account</h1>
+        <% if (signupError == '') { %>
+        <form action="/register" method="POST">
+            <div class="element">
+                <label for="username" class="" class="label">Username</label>
+                <input type="text" name="username" id="username" class="input" placeholder="Choose username" required>
+            </div>
+            <div class="element">
+                <label for="email" class="email" class="label">Email</label>
+                <input type="email" name="email" id="email" class="input" placeholder="Choose an email" required>
+            </div>
+            <div class="element">
+                <label for="password" class="password label">Password</label>
+                <input type="password" name="password" id="password" class="input" placeholder="Choose a password" required>
+            </div>
+            <button class="btn btn-buy">Register</button>
+        </form>
+        <% } %>
+        
+        <%- include('./error/signuperror') %> 
+    </div>
+</div>

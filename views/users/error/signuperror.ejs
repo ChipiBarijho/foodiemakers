@@ -1,0 +1,44 @@
+<% if (signupError && signupError.length) { %>
+<form action="/register" method="POST">
+    <% if (signupError == 'Username and Email are already in use') { %>
+    
+    <div class="element">
+        <label for="username" class="" class="label">Username</label>
+        <input type="text" name="username" id="username" class="input-alert" placeholder="Choose username" required>
+        <div class="alert">Username not available</div>
+    </div>
+    <div class="element">
+        <label for="email" class="email" class="label">Email</label>
+        <input type="email" name="email" id="email" class="input-alert" placeholder="Choose an email" required>
+        <div class="alert">Email already in use</div>
+    </div>
+    <% } %>
+    <% if (signupError == 'Username not available') { %>
+    <div class="element">
+        <label for="username" class="" class="label">Username</label>
+        <input type="text" name="username" id="username" class="input-alert" placeholder="Choose username" required>
+        <div class="alert">Username not available</div>
+    </div>
+    <div class="element">
+        <label for="email" class="email" class="label">Email</label>
+        <input type="email" name="email" id="email" class="input" placeholder="Choose an email" required>
+    </div>
+    <% } %>
+    <% if (signupError == 'Email already in use') { %>
+    <div class="element">
+        <label for="username" class="" class="label">Username</label>
+        <input type="text" name="username" id="username" class="input" placeholder="Choose username" required>
+    </div>
+    <div class="element">
+        <label for="email" class="email" class="label">Email</label>
+        <input type="email" name="email" id="email" class="input input-alert" placeholder="Choose an email" required>
+        <div class="alert">Email already in use</div>
+    </div>
+    <% } %>
+    <div class="element">
+        <label for="password" class="password label">Password</label>
+        <input type="password" name="password" id="password" class="input" placeholder="Choose a password" required>
+    </div>
+    <button class="btn btn-buy">Register</button>
+</form>
+<% } %>

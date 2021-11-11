@@ -1,0 +1,162 @@
+<% layout('layouts/boilerplate') %>
+<div class="back">
+    <a href="/products/<%= product._id %> " class="">Back to product</a> 
+</div>
+<div class="box mt-0">
+    
+    <div class="box-model2">
+        <h1 class="">Edit Product</h1>
+        <form action="/products/<%=product._id%>?_method=PUT" method="POST" class="form" enctype="multipart/form-data">
+            <div class="element">
+                <label for="title" class="">Product name</label>
+                <input type="text" name="product[title]" id="title" value="<%= product.title %>" class="input" required>
+            </div>
+            <div class="element">
+                <label for="price" class="label">Price</label>
+                <input type="text" name="product[price]" id="price" value="<%= product.price %>" class="input" required>
+            </div>
+            
+            <div class="element">
+                <label for="category" class="label">Choose a category</label>
+                <select name="product[category]" id="category" multiple size="4" class="input" required>
+                    <option value="beverages" <%= product.category == 'beverages' ? 'selected' : ''%>>Beverages</option>
+                    <option value="bakery"<%= product.category == 'bakery' ? 'selected' : ''%>>Bakery</option>
+                    <option value="canned goods" <%= product.category == 'canned goods' ? 'selected' : ''%>>Canned Goods</option>
+                    <option value="dairy" <%= product.category == 'dairy' ? 'selected' : ''%>>Dairy</option>
+                    <option value="dry goods" <%= product.category == 'dry goods' ? 'selected' : ''%>>Dry Goods</option>
+                    <option value="frozen foods" <%= product.category == 'frozen foods' ? 'selected' : ''%>>Frozen Foods</option>
+                    <option value="vacuum packaged" <%= product.category == 'vacuum packaged' ? 'selected' : ''%>>Vacuum Packaged</option>
+                    <option value="other" <%= product.category == 'other' ? 'selected' : ''%>>Other</option>
+                </select>
+            </div>
+            
+            <div class="element">
+                <label for="description" class="">Describe your product</label>
+                <textarea name="product[description]" id="description" cols="10" rows="5" class="input" required><%= product.description %></textarea>
+            </div>
+
+
+            <div class="element">
+                <label for="image">Add Images</label>
+                <!-- <input type="text" name="product[image]" id="image" class="input" required> -->
+                <input type="file" name="image" id="" multiple>
+            </div>
+            <div class="element">
+                <label for="">Delete Images</label>
+                <div class="imgs-box">
+                    
+                    <% product.images.forEach(function(img, i){ %>
+                        
+                    <div class="img-container">
+                        <label for="image-<%=i%>"><img src="<%= img.thumbnail %>" class="image-<%=i%>"></label>
+                        <input type="checkbox" name="deleteImages[]" id="image-<%=i%>" value="<%=img.filename%>">
+                         
+                        <i class="fas fa-trash icon-<%=i%>"></i>
+    
+                    </div>
+                    <% }) %> 
+                    
+                   
+                </div>
+            </div>
+            
+
+            <button class="btn btn-buy">Save Changes</button>
+        </form>
+       
+    </div>
+    
+
+    </div>
+    
+</div>
+
+<script>
+    const image0 = document.querySelector('.image-0')
+    const image1 = document.querySelector('.image-1')
+    const image2 = document.querySelector('.image-2')
+    const image3 = document.querySelector('.image-3')
+    const image4 = document.querySelector('.image-4')
+    const image5 = document.querySelector('.image-5')
+    const image6 = document.querySelector('.image-6')
+    const image7 = document.querySelector('.image-7')
+    const image8 = document.querySelector('.image-8')
+    const image9 = document.querySelector('.image-9')
+    const image10 = document.querySelector('.image-10')
+
+
+    const icon0 = document.querySelector('.icon-0')
+    const icon1 = document.querySelector('.icon-1')
+    const icon2 = document.querySelector('.icon-2')
+    const icon3 = document.querySelector('.icon-3')
+    const icon4 = document.querySelector('.icon-4')
+    const icon5 = document.querySelector('.icon-5')
+    const icon6 = document.querySelector('.icon-6')
+    const icon7 = document.querySelector('.icon-7')
+    const icon8 = document.querySelector('.icon-8')
+    const icon9 = document.querySelector('.icon-9')
+    const icon10 = document.querySelector('.icon-10')
+
+
+
+
+
+    image0.addEventListener('click', lowOpac0)
+    image1.addEventListener('click', lowOpac1)
+    image2.addEventListener('click', lowOpac2)
+    image3.addEventListener('click', lowOpac3)
+    image4.addEventListener('click', lowOpac4)
+    image5.addEventListener('click', lowOpac5)
+    image6.addEventListener('click', lowOpac6)
+    image7.addEventListener('click', lowOpac7)
+    image8.addEventListener('click', lowOpac8)
+    image9.addEventListener('click', lowOpac9)
+    image10.addEventListener('click', lowOpac10)
+    
+    function lowOpac0(){
+        image0.classList.toggle('low-opac')
+        icon0.classList.toggle('trash')
+    }
+    function lowOpac1(){
+        image1.classList.toggle('low-opac')
+        icon1.classList.toggle('trash')
+    }
+    function lowOpac2(){
+        image2.classList.toggle('low-opac')
+        icon2.classList.toggle('trash')
+    }
+    function lowOpac3(){
+        image3.classList.toggle('low-opac')
+        icon3.classList.toggle('trash')
+    }
+    function lowOpac4(){
+        image4.classList.toggle('low-opac')
+        icon4.classList.toggle('trash')
+    }
+    function lowOpac5(){
+        image5.classList.toggle('low-opac')
+        icon5.classList.toggle('trash')
+    }
+    function lowOpac6(){
+        image6.classList.toggle('low-opac')
+        icon6.classList.toggle('trash')
+    }
+    function lowOpac7(){
+        image7.classList.toggle('low-opac')
+        icon7.classList.toggle('trash')
+    }
+    function lowOpac8(){
+        image8.classList.toggle('low-opac')
+        icon8.classList.toggle('trash')
+    }
+    function lowOpac9(){
+        image9.classList.toggle('low-opac')
+        icon9.classList.toggle('trash')
+    }
+    function lowOpac10(){
+        image10.classList.toggle('low-opac')
+        icon10.classList.toggle('trash')
+    }
+
+
+</script>

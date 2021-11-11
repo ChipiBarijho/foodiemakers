@@ -1,0 +1,40 @@
+<% layout('layouts/boilerplate') %> 
+<div class="box2">
+    <div class="box-model">
+        <h1>Sell a Product</h1>
+        <form action="/products" method="POST" enctype="multipart/form-data">
+            <div class="element">
+                <label for="title">Title</label>
+                <input type="text" name="product[title]" id="title" class="input" required>
+            </div>
+            <div class="element">
+                <label for="image">Image</label>
+                <!-- <input type="text" name="product[image]" id="image" class="input" required> -->
+                <input type="file" name="image" id="image" required multiple>
+            </div>
+            <div class="element">
+                <label for="price">Price</label>
+                <input type="text" name="product[price]" id="price" class="input" required>
+            </div>
+            <div class="element">
+                <label for="category">Choose a category</label>
+                <select name="product[category]" id="category" class="input" required>
+                    <option value="beverages">Beverages</option>
+                    <option value="bakery">Bakery</option>
+                    <option value="canned goods">Canned Goods</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="dry goods">Dry Goods</option>
+                    <option value="frozen foods">Frozen Foods</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label for="description">Describe your product</label>
+                <textarea name="product[description]" id="description" cols="60" rows="10" class="input" required></textarea>
+            </div>
+            <button class="btn btn-buy">Add Product</button>
+        </form>
+    </div>
+    
+</div>
+
